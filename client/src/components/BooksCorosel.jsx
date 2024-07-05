@@ -10,6 +10,7 @@ const BooksCorosel = ({ title }) => {
         <div className=" max-sm:grid-cols-2 grid-flow-col-dense gap-5 w-full grid grid-cols-4 flex-nowrap justify-center items-center p-2">
           {books.map((book) => (
             <Cards
+              key={book.title}
               title={book.title}
               description={book.description}
               imageurl={book.imageUrl}
