@@ -1,10 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 const BookCard = ({ book }) => {
-  console.log(book);
   return (
-    <div className="min-w-[300px] max-sm:hover:scale-90 cursor-pointer hover:scale-105 transition-all ease-in  bg-gray-200 max-w-[300px] max-sm:scale-75 rounded-md overflow-hidden shadow-lg max-sm:m-0 m-4">
+    <Link
+      to={`/book-view/${book.id}`}
+      className="min-w-[300px] max-sm:hover:scale-90 cursor-pointer hover:scale-105 transition-all ease-in  bg-gray-200 max-w-[300px] max-sm:scale-75 rounded-md overflow-hidden shadow-lg max-sm:m-0 m-4"
+    >
       <img
         className="w-full h-48 object-cover"
         src={book.imageUrl}
@@ -32,7 +34,7 @@ const BookCard = ({ book }) => {
           </button>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

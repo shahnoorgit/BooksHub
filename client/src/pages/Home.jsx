@@ -7,8 +7,8 @@ const Home = () => {
   return (
     <div className="w-screen">
       <Hero />
-      <BooksCorosel />
-      <BooksCorosel />
+      <BooksCorosel title={"Most readed books of the month"} />
+      <BooksCorosel title={"explore the best books collection"} />
     </div>
   );
 };

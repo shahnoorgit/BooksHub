@@ -3,7 +3,7 @@ import React, { useRef } from "react";
 import BookCard from "./Cards";
 import { books } from "../libs/dummy data/dummy";
 
-const BooksCorosel = () => {
+const BooksCorosel = ({ title, isCustome = false, genre }) => {
   const sliderRef = useRef(null);
 
   const scrollLeft = () => {
@@ -13,11 +13,11 @@ const BooksCorosel = () => {
   const scrollRight = () => {
     sliderRef.current.scrollBy({ left: 300, behavior: "smooth" });
   };
-
+  let customBook = [];
   return (
     <div className="bg-gray-500 mt-10 p-3 m-3 mr-4">
       <h1 className="text-4xl max-sm:text-2xl text-center font-bold text-gray-100">
-        Book Carousel
+        {title}
       </h1>
       <div className="relative">
         <button
@@ -30,9 +30,12 @@ const BooksCorosel = () => {
           ref={sliderRef}
           className="flex overflow-x-scroll scrollbar-hide scroll-smooth"
         >
-          {books.map((book, index) => (
-            <BookCard key={index} book={book} />
-          ))}
+          {!isCustome &&
+            books.map((book, index) => <BookCard key={index} book={book} />)}
+          {isCustome &&
+            customBook.map((book, index) => (
+              <BookCard key={index} book={book} />
+            ))}
         </div>
         <button
           onClick={scrollRight}
