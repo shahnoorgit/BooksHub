@@ -1,11 +1,16 @@
 import React from "react";
 import { CiShoppingCart } from "react-icons/ci";
 import { Link } from "react-router-dom";
+import useLogout from "../Hooks/useLogout";
 
-const Navbar = () => {
+const Navbar = ({ auth }) => {
+  const { loading, logout } = useLogout();
+  const handleLogout = () => {
+    logout();
+  };
   return (
     <nav className="bg-gray-900 w-screen shadow shadow-gray-500 px-2">
-      <div className="flex flex-wrap items-center justify-between mx-auto p-4">
+      <div className="flex flex-wrap items-center justify-evenly mx-auto p-4">
         <Link
           to={"/"}
           className="flex items-center space-x-3 rtl:space-x-reverse"
@@ -67,15 +72,32 @@ const Navbar = () => {
                 placeholder="Books..."
               />
             </div>
-            <Link
-              to={"/"}
-              className=" flex cursor-pointer gap-3 items-center bg-transparent justify-center"
-            >
-              <CiShoppingCart className=" text-white text-2xl " />
-            </Link>
-            <div className=" flex gap-3 items-center bg-white justify-center w-10 h-10 rounded-full">
-              User
-            </div>
+
+            {auth ? (
+              <div className=" flex justify-center items-center gap-2">
+                <Link
+                  to={"/"}
+                  className=" flex cursor-pointer gap-3 items-center bg-transparent justify-center"
+                >
+                  <CiShoppingCart className=" text-white text-3xl " />
+                </Link>
+                <div className=" flex gap-3 items-center bg-white justify-center w-10 h-10 rounded-full">
+                  <img
+                    src={auth.image}
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                </div>
+              </div>
+            ) : (
+              <Link to={"/login"}>
+                <button
+                  type="button"
+                  className="text-white mt-1 bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"
+                >
+                  Login
+                </button>
+              </Link>
+            )}
           </div>
           <button
             data-collapse-toggle="navbar-search"
@@ -133,30 +155,56 @@ const Navbar = () => {
           </div>
           <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0  bg-gray-800 md:bg-gray-900 border-gray-700">
             <li>
-              <a
-                href="#"
+              <Link
+                to={"/"}
                 className="block py-2 px-3  rounded md:hover:bg-transparent  md:p-0 md:hover:text-blue-500 text-white hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent border-gray-700"
                 aria-current="page"
               >
                 Home
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="#"
+              <Link
+                to={"/favourite"}
                 className="block py-2 px-3  rounded md:hover:bg-transparent  md:p-0 md:hover:text-blue-500 text-white hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent border-gray-700"
               >
-                About
-              </a>
+                favourite
+              </Link>
             </li>
             <li>
-              <a
-                href="#"
+              <Link
+                to={"/history"}
                 className="block py-2 px-3  rounded md:hover:bg-transparent  md:p-0 md:hover:text-blue-500 text-white hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent border-gray-700"
               >
-                Services
-              </a>
+                History
+              </Link>
             </li>
+            <li>
+              <Link
+                to={"/profile"}
+                className="block py-2 px-3  rounded md:hover:bg-transparent  md:p-0 md:hover:text-blue-500 text-white hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent border-gray-700"
+              >
+                Profile
+              </Link>
+            </li>
+            <li>
+              <Link
+                to={"/my-orders"}
+                className="block py-2 px-3  rounded md:hover:bg-transparent  md:p-0 md:hover:text-blue-500 text-white hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent border-gray-700"
+              >
+                My Orders
+              </Link>
+            </li>
+            {auth && (
+              <li>
+                <button
+                  onClick={handleLogout}
+                  className="block py-2 px-3  rounded md:hover:bg-transparent  md:p-0 md:hover:text-blue-500 text-white hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent border-gray-700"
+                >
+                  LogOut
+                </button>
+              </li>
+            )}
           </ul>
         </div>
       </div>

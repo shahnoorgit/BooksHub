@@ -3,5 +3,29 @@
 @tailwind utilities;
 
 body {
-  @apply bg-gray-500 overflow-x-hidden;
+  @apply bg-gray-700 overflow-x-hidden;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* For Chrome, Edge, and Safari */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: none; /* Disable scrollbar */
+}
+
+/* For Internet Explorer and Edge (legacy) */
+html {
+  -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
 }

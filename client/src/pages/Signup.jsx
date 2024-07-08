@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import useSignup from "../Hooks/useSignup";
+import { Link } from "react-router-dom";
 
 const Signup = () => {
   const [img, setImg] = useState(null);
@@ -136,9 +137,12 @@ const Signup = () => {
         >
           {loading ? "Signing Up..." : "Sign Up"}
         </button>
-        <p className="mt-4 shadow-2xl text-center">
+        <Link
+          to={"/login"}
+          className="mt-4 hover:text-blue-600 hover:underline shadow-2xl text-center"
+        >
           Already have an account? Login
-        </p>
+        </Link>
       </form>
     </div>
   );

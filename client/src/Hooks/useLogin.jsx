@@ -5,25 +5,36 @@ import { AuthProvider } from "../context/AuthContext";
 const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const { setAuth } = useContext(AuthProvider);
-  const login = async (data) => {
+
+  const login = async ({ email, password }) => {
+    setLoading(true);
+    console.log("formdata", email);
     try {
       const res = await fetch("http://localhost:8000/api/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
       });
+
       const data = await res.json();
+
       if (data.error) {
-        return toast.error(error);
+        return toast.error(data.error);
       }
 
       setAuth(data);
+      localStorage.setItem("auth", JSON.stringify(data));
       return data;
     } catch (error) {
-      console.log(error);
-      return toast.error(error);
+      console.error(error);
+      return toast.error("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
+
   return { loading, login };
 };
 

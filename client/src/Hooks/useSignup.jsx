@@ -13,6 +13,7 @@ const useSignup = () => {
       });
       const data = await res.json();
       if (data.error) {
+        console.log(error);
         return toast.error("Error while signing up");
       }
       toast.success("Signup successful");
@@ -20,8 +21,8 @@ const useSignup = () => {
       setAuth(data);
       return data;
     } catch (error) {
-      toast.error("Failed to signup");
-      throw new Error(error);
+      console.log(error);
+      toast.error(" Error while signing up");
     } finally {
       setLoading(false);
     }

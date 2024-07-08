@@ -1,24 +1,47 @@
-import React from "react";
-import Cards from "./Cards";
+// src/BooksSlider.js
+import React, { useRef } from "react";
+import BookCard from "./Cards";
 import { books } from "../libs/dummy data/dummy";
 
-const BooksCorosel = ({ title }) => {
+const BooksCorosel = () => {
+  const sliderRef = useRef(null);
+
+  const scrollLeft = () => {
+    sliderRef.current.scrollBy({ left: -300, behavior: "smooth" });
+  };
+
+  const scrollRight = () => {
+    sliderRef.current.scrollBy({ left: 300, behavior: "smooth" });
+  };
+
   return (
-    <section className="w-full border-t-8 border-b-8 bg-gray-400 p-3">
-      <div className=" flex flex-col gap-5 items-center">
-        <h1 className="text-3xl font-bold text-gray-800">{title}</h1>
-        <div className=" max-sm:grid-cols-2 grid-flow-col-dense gap-5 w-full grid grid-cols-4 flex-nowrap justify-center items-center p-2">
-          {books.map((book) => (
-            <Cards
-              key={book.title}
-              title={book.title}
-              description={book.description}
-              imageurl={book.imageUrl}
-            />
+    <div className="bg-gray-500 mt-10 p-3 m-3 mr-4">
+      <h1 className="text-4xl max-sm:text-2xl text-center font-bold text-gray-100">
+        Book Carousel
+      </h1>
+      <div className="relative">
+        <button
+          onClick={scrollLeft}
+          className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 z-10"
+        >
+          &lt;
+        </button>
+        <div
+          ref={sliderRef}
+          className="flex overflow-x-scroll scrollbar-hide scroll-smooth"
+        >
+          {books.map((book, index) => (
+            <BookCard key={index} book={book} />
           ))}
         </div>
+        <button
+          onClick={scrollRight}
+          className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 z-10"
+        >
+          &gt;
+        </button>
       </div>
-    </section>
+    </div>
   );
 };
 

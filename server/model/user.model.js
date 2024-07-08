@@ -2,26 +2,26 @@ import { Schema, model } from "mongoose";
 
 const userSchema = new Schema({
   username: {
-    type: "string",
+    type: "String",
     required: true,
     unique: true,
   },
   email: {
-    type: "string",
+    type: "String",
     required: true,
     unique: true,
   },
   image: {
-    type: "string",
+    type: "String",
     required: true,
   },
   phone: {
-    type: "number",
+    type: "Number",
     required: true,
     unique: true,
   },
   role: {
-    type: "string",
+    type: "String",
     enum: ["user", "admin"],
     default: "user",
   },
@@ -31,6 +31,10 @@ const userSchema = new Schema({
       ref: "Book",
     },
   ],
+  password: {
+    type: String,
+    required: true,
+  },
 
   history: [
     {
