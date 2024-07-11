@@ -42,6 +42,12 @@ const userSchema = new Schema({
       ref: "Book",
     },
   ],
+  myUploads: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Book",
+    },
+  ],
 });
 
 const User = model("User", userSchema);

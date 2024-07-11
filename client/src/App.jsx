@@ -10,6 +10,8 @@ import { AuthProvider } from "./context/AuthContext";
 import Login from "./pages/Login";
 import Favourite from "./pages/Favourite";
 import BookView from "./pages/BookView";
+import Profile from "./pages/Profile";
+import Upload from "./pages/Upload";
 function App() {
   const location = useLocation();
   const shownav = !["/login", "/sign-up"].includes(location.pathname);
@@ -30,6 +32,14 @@ function App() {
         <Route
           path="/favourite"
           element={Auth ? <Favourite /> : <Navigate to={"/login"} />}
+        />
+        <Route
+          path="/upload"
+          element={Auth ? <Upload /> : <Navigate to={"/login"} />}
+        />
+        <Route
+          path="/profile/:username"
+          element={Auth ? <Profile auth={Auth} /> : <Navigate to={"/login"} />}
         />
         <Route path="/book-view/:id" element={<BookView />} />
       </Routes>

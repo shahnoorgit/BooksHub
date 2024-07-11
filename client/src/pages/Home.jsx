@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <div className="w-screen">
       <Hero />
-      <BooksCorosel title={"Most readed books of the month"} />
+      <BooksCorosel doSlide={true} title={"Most readed books of the month"} />
       <BooksCorosel title={"explore the best books collection"} />
     </div>
   );

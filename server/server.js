@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth.routes.js";
+import booksRoutes from "./routes/books.routes.js";
+import userRoutes from "./routes/user.routes.js";
 import cookieParser from "cookie-parser";
 import { connectToDB } from "./database/connectToDB.js";
 
@@ -16,6 +18,8 @@ app.use(express.urlencoded({ extended: true })); // Correctly configure express.
 app.use(cors());
 
 app.use("/api", authRoutes);
+app.use("/api/books", booksRoutes);
+app.use("/api/user", userRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to the API!" });

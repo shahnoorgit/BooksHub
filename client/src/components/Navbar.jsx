@@ -181,7 +181,7 @@ const Navbar = ({ auth }) => {
             </li>
             <li>
               <Link
-                to={"/profile"}
+                to={`/profile/${auth?.username}`}
                 className="block py-2 px-3  rounded md:hover:bg-transparent  md:p-0 md:hover:text-blue-500 text-white hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent border-gray-700"
               >
                 Profile

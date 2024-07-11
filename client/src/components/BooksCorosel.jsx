@@ -1,21 +1,64 @@
 // src/BooksSlider.js
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import BookCard from "./Cards";
 import { books } from "../libs/dummy data/dummy";
 
-const BooksCorosel = ({ title, isCustome = false, genre }) => {
+const BooksCorosel = ({
+  title,
+  isCustom = false,
+  isclass,
+  doSlide = false,
+  genre,
+}) => {
   const sliderRef = useRef(null);
+  const [direction, setDirection] = useState("right");
 
   const scrollLeft = () => {
-    sliderRef.current.scrollBy({ left: -300, behavior: "smooth" });
+    const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
+    if (scrollLeft > 0) {
+      sliderRef.current.scrollBy({ left: -300, behavior: "smooth" });
+    } else {
+      setDirection("right");
+    }
   };
 
   const scrollRight = () => {
-    sliderRef.current.scrollBy({ left: 300, behavior: "smooth" });
+    const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
+    if (scrollLeft + clientWidth < scrollWidth) {
+      sliderRef.current.scrollBy({ left: 300, behavior: "smooth" });
+    } else {
+      setDirection("left");
+    }
   };
-  let customBook = [];
+
+  let filteredBooks = [];
+  if (isCustom) {
+    filteredBooks = books.filter((book) =>
+      book.category.some((category) => genre.includes(category))
+    );
+  }
+  console.log(filteredBooks);
+
+  useEffect(() => {
+    if (!doSlide) return;
+
+    const interval = setInterval(() => {
+      if (direction === "right") {
+        scrollRight();
+      } else {
+        scrollLeft();
+      }
+    }, 2500);
+
+    return () => clearInterval(interval);
+  }, [doSlide, direction]);
+
   return (
-    <div className="bg-gray-500 mt-10 p-3 m-3 mr-4">
+    <div
+      className={
+        isclass ? isclass : " max-w-full w-full bg-gray-500 mt-10 p-3 m-3 mr-4"
+      }
+    >
       <h1 className="text-4xl max-sm:text-2xl text-center font-bold text-gray-100">
         {title}
       </h1>
@@ -30,10 +73,10 @@ const BooksCorosel = ({ title, isCustome = false, genre }) => {
           ref={sliderRef}
           className="flex overflow-x-scroll scrollbar-hide scroll-smooth"
         >
-          {!isCustome &&
+          {!isCustom &&
             books.map((book, index) => <BookCard key={index} book={book} />)}
-          {isCustome &&
-            customBook.map((book, index) => (
+          {isCustom &&
+            filteredBooks.map((book, index) => (
               <BookCard key={index} book={book} />
             ))}
         </div>
