@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Select from "react-select";
+import useUplaodBook from "../Hooks/useUplaodBook";
 
 const categories = [
   { value: "Fiction", label: "Fiction" },
@@ -21,20 +22,53 @@ const categories = [
   { value: "Horror", label: "Horror" },
   { value: "Adventure", label: "Adventure" },
 ];
-
-const CustomForm = () => {
+const CustomForm = ({ auth }) => {
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [data, setData] = useState({
+    title: "",
+    createdBy: auth._id,
+    author: "",
+    publicationYear: "",
+    author: "",
+    description: "",
+    summary: "",
+    price: "",
+    pdf: null,
+    image: null,
+    audio: null,
+  });
 
+  const { loading, uploadBook } = useUplaodBook();
   const handleCategoryChange = (selectedOptions) => {
     setSelectedCategories(selectedOptions);
+    setData({ ...data, genre: selectedOptions });
   };
 
-  const handleSubmit = (e) => {
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    setData({ ...data, [name]: files[0] });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Extract the values from the selected categories
-    const selectedValues = selectedCategories.map((option) => option.value);
-    console.log("Form submitted with selected categories:", selectedValues);
-    // Add your form submission logic here
+    const formdata = new FormData();
+    formdata.append("title", data.title);
+    formdata.append("createdBy", data.createdBy);
+    formdata.append("author", data.author);
+    formdata.append("publicationYear", data.publicationYear);
+    formdata.append("price", data.price);
+    formdata.append("description", data.description);
+    formdata.append("summary", data.summary);
+    formdata.append(
+      "genre",
+      selectedCategories.map((option) => option.value)
+    );
+    formdata.append("pdf", data.pdf);
+    formdata.append("image", data.image);
+    formdata.append("audio", data.audio);
+
+    console.log(data);
   };
 
   return (
@@ -49,6 +83,8 @@ const CustomForm = () => {
               Title
             </label>
             <input
+              value={data.title}
+              onChange={(e) => setData({ ...data, title: e.target.value })}
               className="h-12 w-full rounded-lg shadow-md hover:scale-105 transition-all ease-in shadow-gray-900"
               type="text"
               id="name"
@@ -79,6 +115,8 @@ const CustomForm = () => {
               Author
             </label>
             <input
+              value={data.author}
+              onChange={(e) => setData({ ...data, author: e.target.value })}
               className="h-12 w-full rounded-lg shadow-md hover:scale-105 transition-all ease-in shadow-gray-900"
               type="text"
               id="author"
@@ -92,6 +130,10 @@ const CustomForm = () => {
               Description
             </label>
             <textarea
+              value={data.description}
+              onChange={(e) =>
+                setData({ ...data, description: e.target.value })
+              }
               className="h-[107px] w-full rounded-lg shadow-md hover:scale-105 transition-all ease-in shadow-gray-900"
               type="text"
               id="description"
@@ -105,6 +147,8 @@ const CustomForm = () => {
               Summary
             </label>
             <textarea
+              value={data.summary}
+              onChange={(e) => setData({ ...data, summary: e.target.value })}
               className="h-[177px] w-full rounded-lg shadow-md hover:scale-105 transition-all ease-in shadow-gray-900"
               type="text"
               id="summary"
@@ -114,8 +158,80 @@ const CustomForm = () => {
             />
           </div>
         </div>
-        <div className=" w-1/3 max-sm:w-full max-sm:bg-transparent rounded-lg shadow-md shadow-gray-900 bg-gray-50">
-          <input type="text" required />
+        <div className=" p-5 w-1/3 max-sm:w-full max-sm:bg-transparent rounded-lg shadow-md shadow-gray-900 bg-gray-50">
+          <div className="mb-4">
+            <div className="flex mb-2 flex-col items-start gap-1 justify-start">
+              <label
+                className="text-lg font-bold text-gray-800"
+                htmlFor="author"
+              >
+                Price
+              </label>
+              <input
+                value={data.price}
+                onChange={(e) => setData({ ...data, price: e.target.value })}
+                className="w-full rounded-lg shadow-md hover:scale-105 transition-all ease-in shadow-gray-900"
+                type="text"
+                id="price"
+                name="price"
+                placeholder="$ price"
+                required
+              />
+            </div>
+            <div className="flex flex-col items-start gap-1 justify-start">
+              <label
+                className="text-lg font-bold text-gray-800"
+                htmlFor="publicationDate"
+              >
+                Publication Date
+              </label>
+              <input
+                value={data.publicationYear}
+                onChange={(e) =>
+                  setData({ ...data, publicationYear: e.target.value })
+                }
+                type="date"
+                className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+              />
+            </div>
+            <label className="block mb-2 text-sm font-medium text-gray-900">
+              Upload PDF:
+            </label>
+            <input
+              name="pdf"
+              required
+              onChange={handleFileChange}
+              type="file"
+              accept=".pdf"
+              className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-medium text-gray-900">
+              Upload Audio:<span>(Optional)</span>
+            </label>
+            <input
+              name="audio"
+              onChange={handleFileChange}
+              type="file"
+              accept="audio/*"
+              className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-medium text-gray-900">
+              Upload Image:
+            </label>
+            <input
+              name="image"
+              required
+              onChange={handleFileChange}
+              type="file"
+              accept="image/*"
+              className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+            />
+          </div>
         </div>
       </div>
       <button

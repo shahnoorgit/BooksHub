@@ -2,10 +2,10 @@ import React from "react";
 import { Form } from "react-router-dom";
 import CustomForm from "../components/CustomForm";
 
-const Upload = () => {
+const Upload = ({ auth }) => {
   return (
     <section className=" mt-5 flex w-screen justify-center">
-      <CustomForm />
+      <CustomForm auth={auth} />
     </section>
   );
 };

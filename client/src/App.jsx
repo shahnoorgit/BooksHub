@@ -35,7 +35,7 @@ function App() {
         />
         <Route
           path="/upload"
-          element={Auth ? <Upload /> : <Navigate to={"/login"} />}
+          element={Auth ? <Upload auth={Auth} /> : <Navigate to={"/login"} />}
         />
         <Route
           path="/profile/:username"

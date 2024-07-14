@@ -2,6 +2,7 @@ import Book from "../model/Book.model.js";
 import User from "../model/user.model.js";
 
 export const uploadBook = async (req, res) => {
+  console.log(req.body);
   const {
     title,
     category,
@@ -16,9 +17,9 @@ export const uploadBook = async (req, res) => {
     price,
   } = req.body;
   try {
-    const imagePath = image.path;
-    const audioPath = audio.path;
-    const pdfPath = pdf.path;
+    const imagePath = req.image.path;
+    const audioPath = req.audio.path;
+    const pdfPath = req.pdf.path;
     const pdfUrl = await uploadToCloudinary(pdfPath);
     const audioUrl = await uploadToCloudinary(audioPath);
     const imageUrl = await uploadToCloudinary(imagePath);
