@@ -10,32 +10,41 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export const uploadToCloudinary = async (localpath) => {
+export const uploadToCloudinary = async (localPaths) => {
   try {
-    if (!localpath) return { message: "no local file path provided" };
+    if (!localPaths) return { message: "No local file path provided" };
 
-    const res = await cloudinary.uploader.upload(localpath, {
-      resource_type: "auto",
+    const paths = Array.isArray(localPaths) ? localPaths : [localPaths];
+    const uploadPromises = paths.map(async (localPath) => {
+      const res = await cloudinary.uploader.upload(localPath, {
+        resource_type: "auto",
+      });
+
+      // Unlink the file asynchronously and handle the callback properly
+      fs.unlink(localPath, (err) => {
+        if (err) {
+          console.error("Error deleting local file:", err);
+        } else {
+          console.log("Local file deleted");
+        }
+      });
+
+      return res.secure_url;
     });
 
-    // Unlink the file asynchronously and handle the callback properly
-    fs.unlink(localpath, (err) => {
-      if (err) {
-        console.error("Error deleting local file:", err);
-      } else {
-        console.log("Local file deleted");
-      }
-    });
-
-    return res.secure_url;
+    const urls = await Promise.all(uploadPromises);
+    return Array.isArray(localPaths) ? urls : urls[0];
   } catch (error) {
-    console.log("error while uploading file to cloudinary", error);
+    console.log("Error while uploading file to Cloudinary:", error);
 
-    // Unlink the file asynchronously and handle the callback properly
-    fs.unlink(localpath, (err) => {
-      if (err) {
-        console.error("Error deleting local file:", err);
-      }
+    const paths = Array.isArray(localPaths) ? localPaths : [localPaths];
+    paths.forEach((localPath) => {
+      // Unlink the file asynchronously and handle the callback properly
+      fs.unlink(localPath, (err) => {
+        if (err) {
+          console.error("Error deleting local file:", err);
+        }
+      });
     });
 
     return null;

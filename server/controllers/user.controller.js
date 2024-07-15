@@ -11,3 +11,21 @@ export const getuser = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export const getMybooks = async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    const getMybooks = await User.findOne({ username }).populate(myUploads);
+    if (!getMybooks) {
+      return res
+        .status(404)
+        .json({ error: "You dont have any books created yet" });
+    }
+
+    return res.status(200).json(getMybooks);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: error });
+  }
+};

@@ -29,7 +29,6 @@ const CustomForm = ({ auth }) => {
     createdBy: auth._id,
     author: "",
     publicationYear: "",
-    author: "",
     description: "",
     summary: "",
     price: "",
@@ -68,7 +67,8 @@ const CustomForm = ({ auth }) => {
     formdata.append("image", data.image);
     formdata.append("audio", data.audio);
 
-    console.log(data);
+    uploadBook(formdata).then((data) => console.log(data));
+    //console.log(data);
   };
 
   return (
@@ -238,7 +238,7 @@ const CustomForm = ({ auth }) => {
         type="submit"
         className="mt-4 p-2 w-full bg-blue-500 text-white rounded-lg"
       >
-        Submit
+        {loading ? "submiting" : "submit"}
       </button>
     </form>
   );

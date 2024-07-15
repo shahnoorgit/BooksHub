@@ -1,6 +1,6 @@
 import express from "express";
 import { upload } from "../middleware/multer.middleware.js";
-import { uploadBook } from "../controllers/books.controller.js";
+import { updateBook, uploadBook } from "../controllers/books.controller.js";
 
 const router = express.Router();
 
@@ -10,4 +10,5 @@ router.post(
   uploadBook
 );
 
+router.post("/update/:id", updateBook);
 export default router;
